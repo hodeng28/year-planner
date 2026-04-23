@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum IncomeCategory {
+  event
+  survey
+  experience
+}
+
+model Income {
+  id        String         @id @default(uuid())
+  category  IncomeCategory
+  date      String         // YYYY-MM-DD format
+  amount    Int
+  memo      String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@index([date])
+  @@index([category])
+}

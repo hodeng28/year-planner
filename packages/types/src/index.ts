@@ -3,4 +3,5 @@ export * from './goal';
 export * from './plan';
 export * from './task';
 export * from './review';
+export * from './income';
 

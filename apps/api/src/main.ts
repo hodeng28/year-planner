@@ -27,11 +27,11 @@ async function bootstrap() {
 
   // CORS 활성화
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
     credentials: true,
   });
 
-  const port = process.env.PORT ?? 3001;
+  const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`API server running at http://localhost:${port}/api`);
 }

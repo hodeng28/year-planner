@@ -2,14 +2,20 @@
   "name": "year-planner",
   "version": "0.1.0",
   "private": true,
-  "description": "Year Planner - 목표/분기/월간 계획 + 오늘 할 일 + 회고 관리 시스템",
+  "description": "Personal Income Dashboard - 개인 수입 관리 대시보드",
   "scripts": {
     "dev:web": "pnpm --filter web dev",
+    "dev:income": "pnpm --filter income dev",
     "dev:api": "pnpm --filter api start:dev",
     "dev": "pnpm --parallel --filter './apps/*' dev",
+    "dev:income-stack": "pnpm run --parallel dev:api dev:income",
     "build": "pnpm --recursive build",
+    "build:income": "pnpm --filter income build",
     "lint": "pnpm --recursive lint",
-    "type-check": "pnpm --recursive type-check"
+    "type-check": "pnpm --recursive type-check",
+    "prisma:generate": "pnpm --filter api prisma:generate",
+    "prisma:migrate": "pnpm --filter api prisma:migrate",
+    "prisma:push": "pnpm --filter api prisma:push"
   },
   "devDependencies": {
     "typescript": "^5.3.3"

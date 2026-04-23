@@ -53,3 +53,6 @@ lerna-debug.log*
 .cache
 .turbo
 
+# Claude
+.claude
+
