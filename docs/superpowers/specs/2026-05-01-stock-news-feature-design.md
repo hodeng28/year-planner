@@ -47,6 +47,21 @@ apps/api/src/stock/
 | GET | `/api/stock/news/latest` | 최신 전체 뉴스 |
 | GET | `/api/stock/news/:stockCode` | 종목별 뉴스 |
 
+### 필터 쿼리 파라미터
+
+기존 API에 필터 파라미터 추가:
+
+```
+GET /api/stock/summary/latest?marketCap=1T&tradingValue=100B
+GET /api/stock/top-volume?marketCap=500B
+GET /api/stock/movers?marketCap=1T
+```
+
+| 파라미터 | 값 | 설명 |
+|----------|-----|------|
+| marketCap | `500B`, `1T`, `10T` | 시가총액 필터 |
+| tradingValue | `10B`, `50B`, `100B` | 거래대금 필터 |
+
 ### 스케줄러 동작
 
 ```
@@ -73,12 +88,15 @@ model TopTradingValueStock {
   change       Int        // 전일대비
   changePercent Float     // 등락률 (%)
   tradingValue BigInt     // 거래대금 (백만원)
+  marketCap    BigInt     // 시가총액 (원)
   market       MarketType
   createdAt    DateTime   @default(now())
 
   @@unique([date, market, rank])
   @@index([date])
 }
+
+// 기존 TopVolumeStock, StockMover 모델에도 marketCap 필드 추가 필요
 
 // 주식 뉴스 (신규)
 model StockNews {
@@ -112,9 +130,12 @@ export interface TopTradingValueStock {
   change: number;
   changePercent: number;
   tradingValue: number; // 거래대금 (백만원)
+  marketCap: number;    // 시가총액 (원)
   market: MarketType;
   createdAt: Date;
 }
+
+// 기존 TopVolumeStock, StockMover 타입에도 marketCap 필드 추가
 
 // 주식 뉴스 (신규)
 export interface StockNews {
@@ -147,6 +168,50 @@ export interface DailyStockSummary {
 
 ---
 
+## 필터 기능
+
+### 시가총액 필터
+
+| 옵션 | 값 |
+|------|-----|
+| 전체 | 제한 없음 |
+| 5천억 이상 | ≥ 500,000,000,000 |
+| 1조 이상 | ≥ 1,000,000,000,000 |
+| 10조 이상 | ≥ 10,000,000,000,000 |
+
+### 거래대금 필터
+
+| 옵션 | 값 |
+|------|-----|
+| 전체 | 제한 없음 |
+| 100억 이상 | ≥ 10,000 (백만원 단위) |
+| 500억 이상 | ≥ 50,000 |
+| 1000억 이상 | ≥ 100,000 |
+
+### 필터 적용 대상
+
+- 거래량 상위 20
+- 거래대금 상위 20
+- 급등/급락 종목
+- 뉴스 수집 대상 종목
+
+### 필터 UI
+
+shadcn/ui `Select` 컴포넌트 사용. 대시보드 상단에 필터 바 배치:
+
+```
+┌─────────────────────────────────────────────────────┐
+│ 시가총액: [전체 ▼]  거래대금: [전체 ▼]  [새로고침] │
+└─────────────────────────────────────────────────────┘
+```
+
+### 필터 상태 관리
+
+- URL query parameter로 저장 (새로고침 유지)
+- 예: `?marketCap=1T&tradingValue=100B`
+
+---
+
 ## 프론트엔드 UI
 
 ### 컴포넌트 구조
@@ -154,7 +219,8 @@ export interface DailyStockSummary {
 ```
 apps/stock/src/components/
 ├── dashboard/
-│   ├── top-volume.tsx            (수정 - 20개로 확장)
+│   ├── filter-bar.tsx            (신규 - 시가총액/거래대금 필터)
+│   ├── top-volume.tsx            (수정 - 20개로 확장 + 필터 적용)
 │   ├── top-trading-value.tsx     (신규 - 거래대금 상위 20)
 │   ├── stock-news-card.tsx       (신규 - 전체 뉴스 섹션)
 │   └── stock-news-dialog.tsx     (신규 - 종목별 뉴스 팝업)
