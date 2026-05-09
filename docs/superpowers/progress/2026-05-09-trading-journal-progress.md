@@ -7,11 +7,11 @@
 
 | Task | Description | Status |
 |------|-------------|--------|
-| 1 | Clean API and Setup Prisma Schema | 🔲 pending |
-| 2 | Create Next.js Frontend | 🔲 pending |
-| 3 | Setup shadcn/ui | 🔲 pending |
-| 4 | Options Module (Backend) | 🔲 pending |
-| 5 | Trades Module (Backend) | 🔲 pending |
+| 1 | Clean API and Setup Prisma Schema | ✅ done |
+| 2 | Create Next.js Frontend | ✅ done |
+| 3 | Setup shadcn/ui | ✅ done |
+| 4 | Options Module (Backend) | ✅ done |
+| 5 | Trades Module (Backend) | ✅ done |
 | 6 | Layout and Navigation | 🔲 pending |
 | 7 | API Client and Hooks | 🔲 pending |
 | 8 | Trade Form and List | 🔲 pending |
@@ -23,7 +23,7 @@
 
 ## Current Task
 
-**Next:** Task 1 - Clean API and Setup Prisma Schema
+**Next:** Task 6 - Layout and Navigation
 
 ## Resume Instructions
 
@@ -39,7 +39,11 @@
 
 ## Completed Tasks Log
 
-(각 태스크 완료 시 여기에 기록)
+- **Task 1** (213584c): feat(api): setup trading journal prisma schema
+- **Task 2** (commit): feat(web): initialize next.js frontend
+- **Task 3** (ed07e9e): feat(web): setup shadcn/ui with dark mode
+- **Task 4**: feat(api): add options module for emotions/patterns/strategies
+- **Task 5**: feat(api): add trades CRUD module
 
 ---
 Last updated: 2026-05-09
