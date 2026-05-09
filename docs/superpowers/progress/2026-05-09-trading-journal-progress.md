@@ -12,18 +12,18 @@
 | 3 | Setup shadcn/ui | ✅ done |
 | 4 | Options Module (Backend) | ✅ done |
 | 5 | Trades Module (Backend) | ✅ done |
-| 6 | Layout and Navigation | 🔲 pending |
-| 7 | API Client and Hooks | 🔲 pending |
-| 8 | Trade Form and List | 🔲 pending |
-| 9 | Stats API | 🔲 pending |
-| 10 | Dashboard Page | 🔲 pending |
+| 6 | Layout and Navigation | ✅ done |
+| 7 | API Client and Hooks | ✅ done |
+| 8 | Trade Form and List | ✅ done |
+| 9 | Stats API | ✅ done |
+| 10 | Dashboard Page | ✅ done |
 | 11 | Analysis Page | 🔲 pending |
 | 12 | Settings Page | 🔲 pending |
 | 13 | Update Root Package.json | 🔲 pending |
 
 ## Current Task
 
-**Next:** Task 6 - Layout and Navigation
+**Next:** Task 11 - Analysis Page
 
 ## Resume Instructions
 
@@ -44,6 +44,9 @@
 - **Task 3** (ed07e9e): feat(web): setup shadcn/ui with dark mode
 - **Task 4**: feat(api): add options module for emotions/patterns/strategies
 - **Task 5**: feat(api): add trades CRUD module
+- **Task 6** (3130a1c): feat(web): add layout with responsive navigation
+- **Task 7**: feat(web): add API client and React Query hooks
+- **Task 8**: feat(web): add trades page with form and list
 
 ---
 Last updated: 2026-05-09
