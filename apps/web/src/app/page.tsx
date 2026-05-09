@@ -1,8 +1,12 @@
+import { KpiCards } from '@/components/dashboard/kpi-cards';
+import { ProfitChart } from '@/components/dashboard/profit-chart';
+
 export default function Home() {
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold">매매일지</h1>
-      <p className="text-gray-500 mt-2">대시보드 준비 중...</p>
-    </main>
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold">대시보드</h2>
+      <KpiCards />
+      <ProfitChart />
+    </div>
   );
 }
