@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter, Geist } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/components/theme-provider';
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import { Nav } from '@/components/layout/nav';
+import { Header } from '@/components/layout/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <div className="flex flex-col md:flex-row min-h-screen">
+              <Nav />
+              <main className="flex-1 pb-16 md:pb-0">
+                <Header />
+                <div className="p-4">{children}</div>
+              </main>
+            </div>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
