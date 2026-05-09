@@ -17,13 +17,13 @@
 | 8 | Trade Form and List | ✅ done |
 | 9 | Stats API | ✅ done |
 | 10 | Dashboard Page | ✅ done |
-| 11 | Analysis Page | 🔲 pending |
+| 11 | Analysis Page | ✅ done |
 | 12 | Settings Page | 🔲 pending |
 | 13 | Update Root Package.json | 🔲 pending |
 
 ## Current Task
 
-**Next:** Task 11 - Analysis Page
+**Next:** Task 12 - Settings Page
 
 ## Resume Instructions
 
@@ -47,6 +47,9 @@
 - **Task 6** (3130a1c): feat(web): add layout with responsive navigation
 - **Task 7**: feat(web): add API client and React Query hooks
 - **Task 8**: feat(web): add trades page with form and list
+- **Task 9**: feat(api): add stats module with summary and monthly endpoints
+- **Task 10**: feat(web): add dashboard with KPI cards and profit chart
+- **Task 11** (274f67c): feat(web): add analysis page placeholder
 
 ---
 Last updated: 2026-05-09
