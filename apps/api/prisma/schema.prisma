@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum IncomeCategory {
@@ -48,8 +49,8 @@ model MarketIndex {
   id            String     @id @default(uuid())
   date          String     // YYYY-MM-DD
   market        MarketType
-  closePrice    Float      // 종가
-  change        Float      // 전일대비
+  closePrice    Int        // 종가
+  change        Int        // 전일대비
   changePercent Float      // 등락률 (%)
   volume        BigInt     // 거래량
   tradingValue  BigInt     // 거래대금 (억원)

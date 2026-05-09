@@ -6,7 +6,7 @@
 
 - **Frontend**: Next.js (App Router) + React + TypeScript + Tailwind + shadcn/ui
 - **Backend**: NestJS + Prisma + PostgreSQL
-- **Charts**: recharts
+- **Charts**: rechartsㄹ
 - **Tooling**: pnpm workspace, React Query, date-fns
 
 ## Project Docs
