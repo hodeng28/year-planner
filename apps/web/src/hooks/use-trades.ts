@@ -22,6 +22,7 @@ export function useCreateTrade() {
     mutationFn: (data: CreateTradeInput) => api.trades.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['trades'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }
@@ -33,6 +34,7 @@ export function useUpdateTrade() {
       api.trades.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['trades'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }
@@ -43,6 +45,7 @@ export function useDeleteTrade() {
     mutationFn: (id: string) => api.trades.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['trades'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }

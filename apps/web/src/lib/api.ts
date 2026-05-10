@@ -52,13 +52,18 @@ export interface TradeFilters {
   type?: 'BUY' | 'SELL';
 }
 
+interface ApiResponse<T> {
+  data: T;
+}
+
 async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   });
   if (!res.ok) throw new Error(`API Error: ${res.status}`);
-  return res.json();
+  const json: ApiResponse<T> = await res.json();
+  return json.data;
 }
 
 function buildQueryString(params: Record<string, string | undefined>): string {

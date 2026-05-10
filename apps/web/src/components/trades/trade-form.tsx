@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,28 +9,49 @@ import { useCreateTrade } from '@/hooks/use-trades';
 import { useEmotions, usePatterns, useStrategies } from '@/hooks/use-options';
 import type { Option } from '@/lib/api';
 
-interface TradeFormProps {
-  onSuccess?: () => void;
+interface TradeFormValues {
+  stockCode: string;
+  stockName: string;
+  type: 'BUY' | 'SELL';
+  price: string;
+  quantity: string;
+  tradedAt: string;
+  emotionId?: string;
+  patternId?: string;
+  strategyId?: string;
+  memo?: string;
 }
 
-export function TradeForm({ onSuccess }: TradeFormProps) {
-  const [form, setForm] = useState({
-    stockCode: '',
-    stockName: '',
-    type: 'BUY' as 'BUY' | 'SELL',
-    price: '',
-    quantity: '',
-    tradedAt: new Date().toISOString().split('T')[0],
-    emotionId: '',
-    patternId: '',
-    strategyId: '',
-    memo: '',
-  });
+interface TradeFormProps {
+  onSuccess?: () => void;
+  defaultValues?: Partial<TradeFormValues>;
+}
+
+const initialForm: TradeFormValues = {
+  stockCode: '',
+  stockName: '',
+  type: 'BUY',
+  price: '',
+  quantity: '',
+  tradedAt: new Date().toISOString().split('T')[0],
+  emotionId: '',
+  patternId: '',
+  strategyId: '',
+  memo: '',
+};
+
+export function TradeForm({ onSuccess, defaultValues }: TradeFormProps) {
+  const [form, setForm] = useState<TradeFormValues>({ ...initialForm, ...defaultValues });
 
   const createTrade = useCreateTrade();
   const { data: emotions } = useEmotions();
   const { data: patterns } = usePatterns();
   const { data: strategies } = useStrategies();
+
+  // Reset form when defaultValues change
+  useEffect(() => {
+    setForm({ ...initialForm, ...defaultValues });
+  }, [defaultValues]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +93,9 @@ export function TradeForm({ onSuccess }: TradeFormProps) {
           <Label>매매구분</Label>
           <Select value={form.type} onValueChange={(v) => v && setForm({ ...form, type: v as 'BUY' | 'SELL' })}>
             <SelectTrigger className="w-full">
-              <SelectValue />
+              <SelectValue>
+                {form.type === 'BUY' ? '매수' : '매도'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="BUY">매수</SelectItem>
@@ -111,11 +134,14 @@ export function TradeForm({ onSuccess }: TradeFormProps) {
       <div className="grid grid-cols-3 gap-4">
         <div className="space-y-1.5">
           <Label>감정</Label>
-          <Select value={form.emotionId || null} onValueChange={(v) => setForm({ ...form, emotionId: v ?? '' })}>
+          <Select value={form.emotionId || '_none_'} onValueChange={(v) => setForm({ ...form, emotionId: v === '_none_' ? '' : v })}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="선택" />
+              <SelectValue>
+                {form.emotionId ? emotions?.find((e: Option) => e.id === form.emotionId)?.name : '선택'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="_none_">선택 안함</SelectItem>
               {emotions?.map((e: Option) => (
                 <SelectItem key={e.id} value={e.id}>
                   {e.name}
@@ -126,11 +152,14 @@ export function TradeForm({ onSuccess }: TradeFormProps) {
         </div>
         <div className="space-y-1.5">
           <Label>패턴</Label>
-          <Select value={form.patternId || null} onValueChange={(v) => setForm({ ...form, patternId: v ?? '' })}>
+          <Select value={form.patternId || '_none_'} onValueChange={(v) => setForm({ ...form, patternId: v === '_none_' ? '' : v })}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="선택" />
+              <SelectValue>
+                {form.patternId ? patterns?.find((p: Option) => p.id === form.patternId)?.name : '선택'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="_none_">선택 안함</SelectItem>
               {patterns?.map((p: Option) => (
                 <SelectItem key={p.id} value={p.id}>
                   {p.name}
@@ -141,11 +170,14 @@ export function TradeForm({ onSuccess }: TradeFormProps) {
         </div>
         <div className="space-y-1.5">
           <Label>전략</Label>
-          <Select value={form.strategyId || null} onValueChange={(v) => setForm({ ...form, strategyId: v ?? '' })}>
+          <Select value={form.strategyId || '_none_'} onValueChange={(v) => setForm({ ...form, strategyId: v === '_none_' ? '' : v })}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="선택" />
+              <SelectValue>
+                {form.strategyId ? strategies?.find((s: Option) => s.id === form.strategyId)?.name : '선택'}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="_none_">선택 안함</SelectItem>
               {strategies?.map((s: Option) => (
                 <SelectItem key={s.id} value={s.id}>
                   {s.name}
@@ -160,7 +192,7 @@ export function TradeForm({ onSuccess }: TradeFormProps) {
         <Input value={form.memo} onChange={(e) => setForm({ ...form, memo: e.target.value })} />
       </div>
       <Button type="submit" className="w-full" disabled={createTrade.isPending}>
-        {createTrade.isPending ? '저장 중...' : '매매 등록'}
+        {createTrade.isPending ? '저장 중...' : form.type === 'SELL' ? '매도 등록' : '매매 등록'}
       </Button>
     </form>
   );

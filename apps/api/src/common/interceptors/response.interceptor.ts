@@ -11,21 +11,24 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-// BigInt를 문자열로 변환하는 헬퍼 함수
-function serializeBigInt(obj: unknown): unknown {
+// BigInt와 Date를 직렬화하는 헬퍼 함수
+function serialize(obj: unknown): unknown {
   if (obj === null || obj === undefined) {
     return obj;
   }
   if (typeof obj === 'bigint') {
     return obj.toString();
   }
+  if (obj instanceof Date) {
+    return obj.toISOString();
+  }
   if (Array.isArray(obj)) {
-    return obj.map(serializeBigInt);
+    return obj.map(serialize);
   }
   if (typeof obj === 'object') {
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj)) {
-      result[key] = serializeBigInt(value);
+      result[key] = serialize(value);
     }
     return result;
   }
@@ -47,8 +50,8 @@ export class ResponseInterceptor<T> implements NestInterceptor<
         if (data === undefined) {
           return { data: null } as ApiResponse<T>;
         }
-        // BigInt를 문자열로 변환
-        return { data: serializeBigInt(data) as T };
+        // BigInt와 Date를 직렬화
+        return { data: serialize(data) as T };
       }),
     );
   }

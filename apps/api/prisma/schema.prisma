@@ -61,3 +61,11 @@ model StrategyOption {
   trades    Trade[]
   createdAt DateTime @default(now())
 }
+
+model FeeSettings {
+  id              String   @id @default("default")
+  buyCommission   Float    @default(0.00015)  // 매수 수수료율 (0.015%)
+  sellCommission  Float    @default(0.00015)  // 매도 수수료율 (0.015%)
+  transactionTax  Float    @default(0.002)    // 증권거래세 (0.20%, 매도시)
+  updatedAt       DateTime @updatedAt
+}

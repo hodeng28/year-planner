@@ -51,12 +51,13 @@ export class TradesService {
   }
 
   update(id: string, dto: UpdateTradeDto) {
+    const data: any = { ...dto };
+    if (dto.tradedAt) {
+      data.tradedAt = new Date(dto.tradedAt);
+    }
     return this.prisma.trade.update({
       where: { id },
-      data: {
-        ...dto,
-        tradedAt: new Date(dto.tradedAt),
-      },
+      data,
       include: { emotion: true, pattern: true, strategy: true },
     });
   }
